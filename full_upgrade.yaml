@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  - name: full upgrade
+    apt:
+      update_cache=true
+      upgrade=full
+
+  - name: reboot
+    reboot:
+      connect_timeout: 60
