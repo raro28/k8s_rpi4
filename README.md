@@ -52,3 +52,8 @@ Apply full upgrade play-book
 ```
 ansible-playbook --ask-become-pass full_upgrade.yaml
 ```
+
+Shutdown
+```
+ansible all -m community.general.shutdown --become --ask-become-pass
+```
