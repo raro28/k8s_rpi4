@@ -10,6 +10,8 @@
 
   - include_tasks: enable_cgroup.yaml
 
+  - include_tasks: boot_config.yaml
+
   - name: reboot
     reboot:
       connect_timeout: 60

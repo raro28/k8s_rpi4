@@ -1,0 +1,41 @@
+- name: fan control 01
+  lineinfile:
+    path: /boot/config.txt
+    line: 'dtparam=poe_fan_temp0=50000'
+    state: present
+
+- name: fan control 02
+  lineinfile:
+    path: /boot/config.txt
+    line: 'dtparam=poe_fan_temp1=60000'
+    state: present
+
+- name: fan control 02
+  lineinfile:
+    path: /boot/config.txt
+    line: 'dtparam=poe_fan_temp2=70000'
+    state: present
+
+- name: fan control 02
+  lineinfile:
+    path: /boot/config.txt
+    line: 'dtparam=poe_fan_temp3=80000'
+    state: present
+
+- name: audio off
+  lineinfile:
+    path: /boot/config.txt
+    line: 'dtparam=audio=off'
+    state: present
+
+- name: disable-wifi
+  lineinfile:
+    path: /boot/config.txt
+    line: 'dtoverlay=disable-wifi'
+    state: present
+
+- name: disable-bt
+  lineinfile:
+    path: /boot/config.txt
+    line: 'dtoverlay=disable-bt'
+    state: present
