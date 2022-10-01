@@ -57,3 +57,8 @@ Shutdown
 ```
 ansible all -m community.general.shutdown --become --ask-become-pass
 ```
+
+Get mac address
+```
+ansible all -m shell -a 'ip add show eth0 | grep ether'
+```
