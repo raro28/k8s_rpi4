@@ -1,0 +1,22 @@
+---
+- name: set cmd path 
+  set_fact:
+    cmdline_txt_path: /boot/cmdline.txt
+
+- include_tasks: cmdline.yaml
+  vars:
+    key: cgroup_enable
+    value: cpuset
+    update: false
+
+- include_tasks: cmdline.yaml
+  vars:
+    key: cgroup_enable
+    value: memory
+    update: false
+
+- include_tasks: cmdline.yaml
+  vars:
+    key: cgroup_memory
+    value: 1
+    update: true
