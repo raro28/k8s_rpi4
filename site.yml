@@ -12,4 +12,6 @@
       become: true
     - role: cgroupv2
       become: true
+    - role: firewalld
+      become: true
 

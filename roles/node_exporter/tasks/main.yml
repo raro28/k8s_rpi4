@@ -88,11 +88,3 @@
     daemon_reload: yes
     state: restarted
     enabled: yes
-
-- name: Enable default node_exporter port traffic
-  ansible.posix.firewalld:
-    zone: FedoraServer
-    service: prometheus-node-exporter
-    permanent: true
-    immediate: true
-    state: enabled
