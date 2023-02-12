@@ -10,3 +10,6 @@
   roles:
     - role: node_exporter
       become: true
+    - role: cgroupv2
+      become: true
+
