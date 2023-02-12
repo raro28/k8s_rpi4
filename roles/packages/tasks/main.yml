@@ -4,3 +4,26 @@
     name: cockpit,cockpit-bridge,cockpit-networkmanager,cockpit-packagekit,cockpit-selinux,cockpit-storaged,cockpit-system,cockpit-ws
     state: absent
     autoremove: yes
+
+- name: DNF utils
+  ansible.builtin.dnf:
+    name: dnf-utils
+    state: present
+
+- name: Upgrade all packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: Check if reboot is required
+  shell: needs-restarting --reboothint
+  register: result
+  ignore_errors: true
+
+- name: Create the restart-required file
+  file:
+    path: "/tmp/restart-required"
+    state: touch
+  when: "\"Reboot is required\" in result.stdout"
+  notify: reboot

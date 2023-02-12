@@ -7,6 +7,8 @@
 
 - hosts: hostnames
   gather_facts: true
+  handlers: # TODO deprecated
+    - include: roles/prereq/handlers/main.yml
   roles:
     - role: node_exporter
       become: true
