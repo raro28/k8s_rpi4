@@ -31,17 +31,17 @@ ansible all -m gather_facts --limit rpi03.home.lan
 
 Update cache (will fail)
 ```
-ansible all -m apt -a update_cache=true
+ansible all -m dnf -a update_cache=true
 ```
 
 Update cache (elevate privileges)
 ```
-ansible all -m apt -a update_cache=true --become --ask-become-pass
+ansible all -m dnf -a update_cache=true --become --ask-become-pass
 ```
 
 Perform full upgrade
 ```
-ansible all -m apt -a upgrade=full --become --ask-become-pass
+ansible all -m dnf -a upgrade=full --become --ask-become-pass
 ```
 Reboot
 ```
@@ -50,7 +50,7 @@ ansible all -m reboot --become --ask-become-pass
 
 Apply full upgrade play-book
 ```
-ansible-playbook --ask-become-pass full_upgrade.yaml
+ansible-playbook --ask-become-pass site.yml
 ```
 
 Shutdown

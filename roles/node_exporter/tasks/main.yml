@@ -1,0 +1,90 @@
+---
+
+- name: Fetch node_exporter release x64
+  uri:
+    url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz
+    dest: /tmp/node_exporter.tar.gz
+    headers:
+      Accept: application/octet-stream
+  when: ansible_facts.architecture == "x86_64"
+
+- name: Fetch node_exporter release arm64
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-arm64.tar.gz
+    dest: /tmp/node_exporter.tar.gz
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - ( ansible_facts.architecture is search("arm") and
+        ansible_facts.userspace_bits == "64" ) or
+      ansible_facts.architecture is search("aarch64")
+
+- name: Extract node_exporter binary
+  become: true
+  unarchive:
+    src: /tmp/node_exporter.tar.gz
+    dest: /usr/sbin/
+    creates: /usr/sbin/node_exporter
+    copy: no
+    extra_opts:
+    - --strip=1
+    - --wildcards
+    - '*/node_exporter'
+
+- name: Clean up LICENSE
+  become: true
+  file:
+    path: /usr/sbin/LICENSE
+    state: absent
+
+- name: Clean up NOTICE
+  become: true
+  file:
+    path: /usr/sbin/NOTICE
+    state: absent
+
+- name: Create node_exporter user
+  user:
+    name: node_exporter
+    shell: /sbin/nologin
+    state: present
+
+- name: Create /var/lib/node_exporter/textfile_collector directory
+  file:
+    path: /var/lib/node_exporter/textfile_collector
+    state: directory
+    owner: node_exporter
+    group: node_exporter
+    mode: 0750
+
+- name: Fetch node_exporter.service
+  get_url:
+    url: https://raw.githubusercontent.com/prometheus/node_exporter/v{{ node_exporter_version }}/examples/systemd/node_exporter.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Fetch node_exporter.socket
+  get_url:
+    url: https://raw.githubusercontent.com/prometheus/node_exporter/v{{ node_exporter_version }}/examples/systemd/node_exporter.socket
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Fetch sysconfig.node_exporter
+  get_url:
+    url: https://raw.githubusercontent.com/prometheus/node_exporter/v{{ node_exporter_version }}/examples/systemd/sysconfig.node_exporter
+    dest: /etc/sysconfig/node_exporter
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Restart service node_exporter also issue daemon-reload to pick up config changes
+  ansible.builtin.systemd:
+    name: node_exporter
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
