@@ -1,0 +1,15 @@
+---
+- hosts: addresses
+  gather_facts: true
+  roles:
+    - role: prereq
+      become: true
+
+- hosts: hostnames
+  gather_facts: true
+  roles:
+    - role: node_exporter
+      become: true
+    - role: cgroupv2
+      become: true
+

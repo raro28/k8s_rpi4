@@ -1,0 +1,10 @@
+---
+- name: Enable CPU
+  ansible.builtin.shell: |
+    echo "+cpu" >> /sys/fs/cgroup/cgroup.subtree_control
+    grep "cpu" /sys/fs/cgroup/cgroup.subtree_control -q
+
+- name: Enable CPUSet
+  ansible.builtin.shell: |
+    echo "+cpuset" >> /sys/fs/cgroup/cgroup.subtree_control
+    grep "cpuset" /sys/fs/cgroup/cgroup.subtree_control -q

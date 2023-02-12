@@ -1,0 +1,6 @@
+---
+#https://stackoverflow.com/a/58859781
+- name: "Update hostname"
+  hostname:
+    name: "{{ new_hostname }}"
+  notify: reboot
