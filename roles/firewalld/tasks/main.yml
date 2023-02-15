@@ -1,13 +1,29 @@
 ---
+- name: Enable firewalld
+  ansible.builtin.systemd:
+    name: firewalld
+    enabled: yes
+    state: restarted
 
-# - name: Enable default node_exporter port traffic
-#   ansible.posix.firewalld:
-#     zone: FedoraServer
-#     service: prometheus-node-exporter
-#     permanent: true
-#     immediate: true
-#     state: enabled
+- name: Log firewall rejections
+  become: true
+  shell: firewall-cmd --set-log-denied=all
+  notify: restart firewalld
 
+- name: Get default firewalld zone
+  shell: firewall-cmd --get-default-zone
+  register: default_zone
+
+- name: Open required ports
+  become: true
+  ansible.posix.firewalld:
+    zone: "{{ default_zone.stdout }}"
+    permanent: true
+    immediate: true
+    state: enabled
+    port: "{{ item.port }}/{{ item.protocol }}"
+  loop:
+    - { port: 9100, protocol: 'tcp', source: 'any'}
 
 - name: Disable firewalld
   ansible.builtin.systemd:
