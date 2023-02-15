@@ -32,17 +32,14 @@
     - --wildcards
     - '*/node_exporter'
 
-- name: Clean up LICENSE
+- name: Clean up files
   become: true
   file:
-    path: /usr/sbin/LICENSE
+    path: "{{ item }}"
     state: absent
-
-- name: Clean up NOTICE
-  become: true
-  file:
-    path: /usr/sbin/NOTICE
-    state: absent
+  loop:
+    - /usr/sbin/LICENSE
+    - /usr/sbin/NOTICE
 
 - name: Create node_exporter user
   user:
@@ -58,29 +55,17 @@
     group: node_exporter
     mode: 0750
 
-- name: Fetch node_exporter.service
+- name: Fetch files for node_exporter
   get_url:
-    url: https://raw.githubusercontent.com/prometheus/node_exporter/v{{ node_exporter_version }}/examples/systemd/node_exporter.service
-    dest: /etc/systemd/system
+    url: https://raw.githubusercontent.com/prometheus/node_exporter/v{{ node_exporter_version }}/examples/systemd/{{ item.filename }}
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0644
-
-- name: Fetch node_exporter.socket
-  get_url:
-    url: https://raw.githubusercontent.com/prometheus/node_exporter/v{{ node_exporter_version }}/examples/systemd/node_exporter.socket
-    dest: /etc/systemd/system
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Fetch sysconfig.node_exporter
-  get_url:
-    url: https://raw.githubusercontent.com/prometheus/node_exporter/v{{ node_exporter_version }}/examples/systemd/sysconfig.node_exporter
-    dest: /etc/sysconfig/node_exporter
-    owner: root
-    group: root
-    mode: 0644
+  loop:
+    - { filename: "node_exporter.service", dest: "/etc/systemd/system" }
+    - { filename: "node_exporter.socket", dest: "/etc/systemd/system" }
+    - { filename: "sysconfig.node_exporter", dest: "/etc/sysconfig/node_exporter" }
 
 - name: Restart service node_exporter also issue daemon-reload to pick up config changes
   ansible.builtin.systemd:
