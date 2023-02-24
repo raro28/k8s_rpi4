@@ -4,3 +4,12 @@
   hostname:
     name: "{{ new_hostname }}"
   notify: reboot
+
+- name: Update hosts file
+  become: true
+  ansible.builtin.template:
+    src: hosts.j2
+    dest: "/etc/hosts"
+    mode: 0644
+  vars:
+    content: "{{ new_hostname }}"
