@@ -1,0 +1,8 @@
+[Unit]
+Description=Fix cgroup controllers
+After=user.slice
+Requires=user.slice
+Before=systemd-logind.service
+ 
+[Install]
+WantedBy=multi-user.target
