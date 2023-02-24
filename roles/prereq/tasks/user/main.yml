@@ -1,13 +1,13 @@
 ---
-- name: Create pi user
+- name: Create user
   user:
-    name: pi
+    name: "{{ created_user }}"
     state: present
     groups: wheel
     append: yes
 
-- name: Set authorized key for user pi copying it from current user
+- name: Set authorized key for user copying it from current user
   ansible.posix.authorized_key:
-    user: pi
+    user: "{{ created_user }}"
     state: present
     key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
