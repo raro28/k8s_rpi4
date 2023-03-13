@@ -48,6 +48,11 @@ Reboot
 ansible all -m reboot --become --ask-become-pass
 ```
 
+Install requirements
+```
+ansible-galaxy collection install -r ./collections/requirements.yml
+```
+
 Apply full upgrade play-book
 ```
 ansible-playbook --ask-become-pass site.yml
