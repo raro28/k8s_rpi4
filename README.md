@@ -41,7 +41,7 @@ ansible all -m dnf -a update_cache=true --become --ask-become-pass
 
 Perform full upgrade
 ```
-ansible all -m dnf -a upgrade=full --become --ask-become-pass
+ansible all -m dnf -a 'name=* state=latest' --become --ask-become-pass
 ```
 Reboot
 ```

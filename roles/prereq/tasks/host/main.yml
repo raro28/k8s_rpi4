@@ -13,3 +13,13 @@
     mode: 0644
   vars:
     content: "{{ new_hostname }}"
+
+- name: Disable initial-setup
+  ansible.builtin.systemd:
+    name: initial-setup
+    enabled: no
+
+- name: Update kernel arguments
+  become: true
+  shell: grubby --args="delayacct" --update-kernel=ALL
+  notify: reboot
