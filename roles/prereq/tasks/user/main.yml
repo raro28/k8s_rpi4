@@ -11,3 +11,12 @@
     user: "{{ created_user }}"
     state: present
     key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
+- name: Passwordless sudoer
+  become: true
+  ansible.builtin.template:
+    src: sudoers.j2
+    dest: "/etc/sudoers.d/00-pi"
+    mode: 0440
+  vars:
+    content: "{{ new_hostname }}"
