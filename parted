@@ -1,0 +1,7 @@
+parted /dev/mmcblk0 mkpart extended 14680064s -- -1s
+parted /dev/mmcblk0 mkpart -a optimal logical 14682112s -- -1s
+
+pvcreate /dev/mmcblk0p5
+vgextend fedora /dev/mmcblk0p5
+lvextend -l +100%FREE /dev/mapper/fedora-root
+xfs_growfs /dev/mapper/fedora-root

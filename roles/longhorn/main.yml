@@ -1,3 +1,0 @@
----
-- include_tasks: "iscsi/main.yml"
-- include_tasks: "nfsv4/main.yml"
