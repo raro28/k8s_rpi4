@@ -18,7 +18,5 @@
       become: true
     - role: packages
       become: true
-    - role: iscsi
-      become: true
-    - role: nfsv4
+    - role: longhorn
       become: true
