@@ -1,0 +1,32 @@
+- name: Install iscsi-initiator-utils package without running scripts
+  ansible.builtin.dnf:
+    name: iscsi-initiator-utils
+    state: present
+
+- name: Set iSCSI initiator name
+  ansible.builtin.command: /sbin/iscsi-iname
+  register: initiator_name
+- name: Write iSCSI initiator name to file
+  ansible.builtin.copy:
+    content: "InitiatorName={{ initiator_name.stdout }}\n"
+    dest: /etc/iscsi/initiatorname.iscsi
+
+- name: Enable iscsid
+  ansible.builtin.systemd:
+    name: iscsid
+    enabled: yes
+    state: restarted
+
+- name: Load iscsi_tcp kernel module
+  ansible.builtin.modprobe:
+    name: iscsi_tcp
+
+- name: Persistently load iscsi_tcp kernel module
+  ansible.builtin.lineinfile:
+    path: /etc/modules-load.d/iscsi_tcp.conf
+    line: iscsi_tcp
+    state: present
+    create: yes
+    owner: root
+    group: root
+    mode: '0644'
