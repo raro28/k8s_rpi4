@@ -6,6 +6,7 @@
 - name: Set iSCSI initiator name
   ansible.builtin.command: /sbin/iscsi-iname
   register: initiator_name
+
 - name: Write iSCSI initiator name to file
   ansible.builtin.copy:
     content: "InitiatorName={{ initiator_name.stdout }}\n"

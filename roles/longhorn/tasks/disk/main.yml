@@ -1,6 +1,25 @@
 ---
+
+- name: Create /data directory
+  ansible.builtin.file:
+    path: /data
+  become: true
+
+- name: Unmount
+  mount:
+    path: /data
+    state: unmounted
+
 - name: Create a ext4 filesystem on /dev/sda6 and check disk blocks
   community.general.filesystem:
     fstype: btrfs
+    force: true
     dev: /dev/sda6
-    opts: -cc
+
+- name: Mount Btrfs partition on /data
+  ansible.posix.mount:
+    src: /dev/sda6
+    path: /data
+    fstype: btrfs
+    opts: defaults
+    state: mounted
