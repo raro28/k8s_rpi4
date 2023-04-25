@@ -5,7 +5,7 @@
     - role: prereq
       become: true
 
-- hosts: hostnames
+- hosts: basics
   gather_facts: true
   handlers: # TODO deprecated
     - include: roles/prereq/handlers/main.yml
@@ -18,5 +18,9 @@
       become: true
     - role: packages
       become: true
+
+- hosts: worker-nodes
+  gather_facts: true
+  roles:
     - role: longhorn
       become: true
