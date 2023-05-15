@@ -16,6 +16,12 @@
       become: true
     - role: firewalld
       become: true
+
+- hosts: worker-nodes-basics
+  gather_facts: true
+  handlers: # TODO deprecated
+    - include: roles/prereq/handlers/main.yml
+  roles:
     - role: packages
       become: true
     - role: systemctl
