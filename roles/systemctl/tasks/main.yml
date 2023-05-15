@@ -1,0 +1,5 @@
+---
+- name: Disable dnf make cache
+  ansible.builtin.systemd:
+    name: dnf-makecache.timer
+    enabled: no

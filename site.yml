@@ -18,6 +18,8 @@
       become: true
     - role: packages
       become: true
+    - role: systemctl
+      become: true
 
 - hosts: worker-nodes
   gather_facts: true

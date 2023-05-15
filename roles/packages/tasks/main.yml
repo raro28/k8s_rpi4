@@ -5,6 +5,13 @@
     state: absent
     autoremove: yes
 
+- name: Uninstall zram
+  ansible.builtin.dnf:
+    name: zram-generator-defaults
+    state: absent
+    autoremove: yes
+    notify: reboot
+
 - name: DNF utils
   ansible.builtin.dnf:
     name: dnf-utils
