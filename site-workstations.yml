@@ -1,0 +1,12 @@
+---
+- hosts: basics
+  gather_facts: true
+  handlers: # TODO deprecated
+    - include: roles/prereq/handlers/main.yml
+  roles:
+    - role: node_exporter
+      become: true
+    - role: cgroupv2
+      become: true
+    - role: firewalld
+      become: true
