@@ -10,7 +10,7 @@
     name: zram-generator-defaults
     state: absent
     autoremove: yes
-    notify: reboot
+  notify: reboot
 
 - name: DNF utils
   ansible.builtin.dnf:
