@@ -32,3 +32,4 @@
   roles:
     - role: longhorn
       become: true
+      when: "{{ disk_device_set | default(false) }}"
